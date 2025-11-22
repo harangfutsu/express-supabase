@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
             hashedPassword,
             verificationToken)
 
-        if (!createdUser.affectedRows) {
+        if (!createdUser.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -98,7 +98,7 @@ const updateUser = async (req, res) => {
 
         const updatedUser = await userModel.updateUser(userId, firstName, lastName, email, password)
 
-        if (!updatedUser.affectedRows) {
+        if (!updatedUser.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -139,7 +139,7 @@ const deleteUser = async (req, res) => {
         
         const deletedUser = await userModel.deleteUser(userId)
 
-        if (!deletedUser.affectedRows) {
+        if (!deletedUser.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -202,12 +202,14 @@ const loginUser = async (req, res) => {
 
         const user = await userModel.getUserByEmail(email)
 
+        console.log('data user', user)
+
         if (!user || user.length === 0) {
             return errorHandler(res, false, 400, "Email atau password salah")
         }
-
         const foundUser = user[0]
 
+        console.log('data foundUser', foundUser)
         if (!foundUser.is_verified) {
             return errorHandler(
                 res,
@@ -266,6 +268,8 @@ const verifyEmail = async (req, res) => {
         }
 
         const user = await userModel.getUserByVerificationToken(token)
+
+        console.log('data getUserByVerificationToken', user)
 
         if (!user || user.length === 0) {
             return errorHandler(

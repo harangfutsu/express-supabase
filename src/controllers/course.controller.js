@@ -45,8 +45,9 @@ const createCourse = async (req, res) => {
         }
 
         const createdCourse = await courseModel.createCourse(title, category, description, price, language)
+        console.log('data createdCourse', createdCourse)
 
-        if (!createdCourse.affectedRows) {
+        if (!createdCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -84,8 +85,9 @@ const updateCourse = async (req, res) => {
                 "Semua field wajib diisi")}
 
         const updatedCourse = await courseModel.updateCourse(id, title, category, description, price, language)
+        console.log('data updatedCourse', updatedCourse)
 
-        if (!updatedCourse.affectedRows) {
+        if (!updatedCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -126,7 +128,7 @@ const deleteCourse = async (req, res) => {
         
         const deletedCourse = await courseModel.deleteCourse(id)
 
-        if (!deletedCourse.affectedRows) {
+        if (!deletedCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
